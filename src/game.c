@@ -1034,23 +1034,32 @@ int wasdToDirection(int keyValue) {
   return -1;
 }
 
-bool handleLocalKeypress() {
+bool handleLocalKeypress()
+{
   static SDL_Event e;
   bool quit = false;
-  while (SDL_PollEvent(&e)) {
-    if (e.type == SDL_QUIT) {
+  while (SDL_PollEvent(&e))
+    {
+    if (e.type == SDL_QUIT)
+      {
       quit = true;
       setTerm(GAME_OVER);
-    } else if (e.type == SDL_KEYDOWN) {
+    }
+    else if (e.type == SDL_KEYDOWN)
+      {
       int keyValue = e.key.keysym.sym;
       if (keyValue == SDLK_ESCAPE) pauseGame();
-      for (int id = 0; id <= 1 && id < playersCount; id++) {
+      
+      for (int id = 0; id <= 1 && id < playersCount; id++)
+	{
         Snake* player = spriteSnake[id];
-        if (player->playerType == LOCAL) {
-          if (!player->buffs[BUFF_FROZEN] && player->sprites->head != NULL) {
-            int direction = id == 0 ? arrowsToDirection(keyValue)
-                                    : wasdToDirection(keyValue);
-            if (direction >= 0) {
+        if (player->playerType == LOCAL)
+	  {
+          if (!player->buffs[BUFF_FROZEN] && player->sprites->head != NULL)
+	    {
+            int direction = wasdToDirection(keyValue);
+            if (direction >= 0)
+	      {
               sendPlayerMovePacket(id, direction);
               changeSpriteDirection(player->sprites->head, direction);
             }
